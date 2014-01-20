@@ -83,7 +83,8 @@ function getImage( fileName )
 					   self.act = false
 
 					   local newX = getXByCol( self.col );
-				       transition.moveTo( self, {x=newX, y=self.y, time = 500})
+					   local newY = getYByRow( self.row );
+				       transition.moveTo( self, {x=newX, y=newY, time = 500})
 				       AreYouWinner()
 				       return
 				   	end
@@ -101,7 +102,8 @@ function getImage( fileName )
 					   self.act = false
 
 					   local newX = getXByCol( self.col );
-				       transition.moveTo( self, {x=newX, y=self.y, time = 500})
+					   local newY = getYByRow( self.row );
+				       transition.moveTo( self, {x=newX, y=newY, time = 500})
 				       AreYouWinner()
 				       return
 				   	end
@@ -118,8 +120,9 @@ function getImage( fileName )
 
 					   self.act = false
 
+					   local newX = getXByCol( self.col );
 					   local newY = getYByRow( self.row );
-				       transition.moveTo( self, {x=self.x, y=newY, time = 500})
+				       transition.moveTo( self, {x=newX, y=newY, time = 500})
 				       AreYouWinner()
 				       return
 				   	end
@@ -136,8 +139,9 @@ function getImage( fileName )
 
 					   self.act = false
 
+					   local newX = getXByCol( self.col );
 					   local newY = getYByRow( self.row );
-				       transition.moveTo( self, {x=self.x, y=newY, time = 500})
+				       transition.moveTo( self, {x=newX, y=newY, time = 500})
 				       AreYouWinner()
 				       return
 				   	end

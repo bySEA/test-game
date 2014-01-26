@@ -3,107 +3,104 @@
 -- menu.lua
 --
 -----------------------------------------------------------------------------------------
-
+-- 
 local storyboard = require( "storyboard" )
 local scene = storyboard.newScene()
 
--- include Corona's "widget" library
 local widget = require "widget"
 
---------------------------------------------
+local background, levelone, leveltwo, titleLogo
+-- 
+-----------------------------------------------------------------------------------------
+-- 
+local function GoToScene1 (event)
+	storyboard.gotoScene( "levelone", {effect = "slideLeft", time = 800} )
+end 
 
--- forward declarations and other locals
-local playBtn
-
--- 'onRelease' event listener for playBtn
-local function onPlayBtnRelease()
-	
-	-- go to level1.lua scene
-	storyboard.gotoScene( "level1", "fade", 500 )
-	
-	return true	-- indicates successful touch
+local function GoToScene2 (event)
+	storyboard.gotoScene( "leveltwo", {effect = "slideUp", time = 800} )
 end
-
------------------------------------------------------------------------------------------
--- BEGINNING OF YOUR IMPLEMENTATION
--- 
--- NOTE: Code outside of listener functions (below) will only be executed once,
---		 unless storyboard.removeScene() is called.
 -- 
 -----------------------------------------------------------------------------------------
 
--- Called when the scene's view does not exist:
+-----------------------------------------------------------------------------------------
+
 function scene:createScene( event )
 	local group = self.view
 
-    local background = display.newRect( display.contentWidth/2, display.contentHeight/2, display.contentWidth, display.contentHeight )
-    background:setFillColor(1, 1, 1)
-	
-	-- create/position logo/title image on upper-half of the screen
-	local titleLogo = display.newImageRect( "logo.png", display.contentWidth, display.contentWidth*0.65  )
+
+	background = display.newRect( display.contentWidth/2, display.contentHeight/2, display.contentWidth, display.contentHeight )
+	background:setFillColor(1, 1, 1)
+	background:toBack( )
+
+	titleLogo = display.newImageRect( "logo.png", display.contentWidth, display.contentWidth*0.65  )
 	titleLogo.x = display.contentWidth * 0.5
 	titleLogo.y = display.contentHeight * 0.2
-	
-	-- create a widget button (which will loads level1.lua on release)
-	playBtn = widget.newButton{
-		label="Play",
-		labelColor = { default={ 0 }, over={ 36, 20, 56 } },
-		width=154, height=40,
-		onRelease = onPlayBtnRelease	-- event listener function
+
+	levelone = widget.newButton {
+		width =  display.contentWidth*0.5,
+	    height = display.contentWidth*0.1,
+	    defaultFile = "levelone_1.png",
+	    overFile = "levelone_2.png",
+		onRelease = GoToScene1
 	}
-	playBtn.x = display.contentWidth*0.5
-	playBtn.y = display.contentHeight - 125
-	
-	-- all display objects must be inserted into group
-	group:insert( background )
+	levelone.x = display.contentCenterX; levelone.y = display.contentHeight*0.7
+    
+	leveltwo = widget.newButton{
+		width =  display.contentWidth*0.5,
+	    height = display.contentWidth*0.1,
+	    defaultFile = "leveltwo_1.png",
+	    overFile = "leveltwo_2.png",
+		onRelease = GoToScene2
+	}
+	leveltwo.x = display.contentCenterX; leveltwo.y = display.contentHeight*0.8
+
+    group:insert( background )
 	group:insert( titleLogo )
-	group:insert( playBtn )
+	group:insert( levelone )
+	group:insert( leveltwo )
+
 end
 
--- Called immediately after scene has moved onscreen:
+-----------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------
+
 function scene:enterScene( event )
-	local group = self.view
-	
-	-- INSERT code here (e.g. start timers, load audio, start listeners, etc.)
-	
+	local group = self.view	
 end
-
--- Called when scene is about to move offscreen:
+-- 
+-- 
 function scene:exitScene( event )
 	local group = self.view
-	
-	-- INSERT code here (e.g. stop timers, remove listenets, unload sounds, etc.)
-	
 end
-
--- If scene's view is removed, scene:destroyScene() will be called just prior to:
+-- 
+-- 
 function scene:destroyScene( event )
 	local group = self.view
 	
-	if playBtn then
-		playBtn:removeSelf()	-- widgets must be manually removed
-		playBtn = nil
+	if levelone then
+		levelone:removeSelf()	
+		levelone = nil
+	end
+
+	if leveltwo then
+		leveltwo:removeSelf()	
+		leveltwo = nil
 	end
 end
 
 -----------------------------------------------------------------------------------------
--- END OF YOUR IMPLEMENTATION
------------------------------------------------------------------------------------------
 
--- "createScene" event is dispatched if scene's view does not exist
+-----------------------------------------------------------------------------------------
+-- 
 scene:addEventListener( "createScene", scene )
-
--- "enterScene" event is dispatched whenever scene transition has finished
+-- 
 scene:addEventListener( "enterScene", scene )
-
--- "exitScene" event is dispatched whenever before next scene's transition begins
+-- 
 scene:addEventListener( "exitScene", scene )
-
--- "destroyScene" event is dispatched before view is unloaded, which can be
--- automatically unloaded in low memory situations, or explicitly via a call to
--- storyboard.purgeScene() or storyboard.removeScene().
+-- 
 scene:addEventListener( "destroyScene", scene )
-
+-- 
 -----------------------------------------------------------------------------------------
-
 return scene

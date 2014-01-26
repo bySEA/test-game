@@ -8,7 +8,8 @@
 display.setStatusBar( display.HiddenStatusBar )
 
 -- include the Corona "storyboard" module
-local storyboard = require "storyboard"
+local storyboard = require( "storyboard" )
+storyboard.purgeOnSceneChange = true
 
 -- load menu screen
 storyboard.gotoScene( "menu" )
